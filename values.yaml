@@ -1,0 +1,21 @@
+# Default values for py-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+REGISTRY: gcr.io/vocal-camera-194109
+
+replicaCount: 1
+
+appName: philyes
+
+image:
+  repository: gcr.io/playerdotme-staging/anfa-nodejs-hello
+  tag: master-4
+
+service:
+  type: ClusterIP
+
+LANDING_PAGE_PORT: 1351
+PY_DISK_MONGO_NAME: 'py-disk-mongo'
+PY_DISK_MONGO_SIZE: 10Gi
+PY_DISK_RABBITMQ: 1351

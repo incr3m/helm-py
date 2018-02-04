@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}-landing
+  labels:
+    chart: {{ .Chart.Name }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}-landing
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}-landing
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Values.appName }}-landing
+          image: {{.Values.REGISTRY}}/py/landing
+          imagePullPolicy: {{default "Always" .Values.image.pullPolicy}}
+          ports:
+            - containerPort: {{ .Values.LANDING_PAGE_PORT }}
+              name: landing-port

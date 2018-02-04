@@ -1,0 +1,43 @@
+apiVersion: apps/v1beta1 # for versions before 1.6.0 use extensions/v1beta1
+kind: StatefulSet
+metadata:
+  name: mongo
+spec:
+  serviceName: mongo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo
+        ports:
+        - containerPort: 27017
+          name: mongo
+        volumeMounts:
+        - name: mongo-persistent-storage
+          mountPath: "/data/db"
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-persistent-storage
+      annotations:
+        volume.beta.kubernetes.io/storage-class: 'standard'
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 15Gi
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mongo
+spec:
+  selector:
+    app: mongo
+  type: {{ .Values.service.type }}
+  ports:
+  - port: 27017
+    protocol: TCP

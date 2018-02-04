@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.appName }}-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: philyes.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.appName }}-landing-svc
+          servicePort: {{ .Values.LANDING_PAGE_PORT }}
